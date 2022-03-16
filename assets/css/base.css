@@ -1,0 +1,24 @@
+:root {
+    --color-white: #fff;
+    --color-pink: #f14282;
+    --color-black: #333;
+}
+
+h1 {
+   font-size: 1.8rem;
+   font-weight: 500;
+   letter-spacing: -.5px; 
+   color: var(--color-black);
+}
+
+h4 {
+    font-size: 1.2rem;  
+    font-weight: 500;
+    color: var(--color-pink);
+}
+
+.btn {
+    font-size: 2rem;
+    color: #85848f;
+    font-weight: 300;
+}
