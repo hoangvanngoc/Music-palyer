@@ -15,7 +15,7 @@
 <body>
     <div class="player">
         <!-- dashboard -->
-        <div class="dashboard">
+        <div class="dashboard dashboard-scroll">
             <!-- header -->
             <header id="header">
                 <h4>Now Playing</h4>
@@ -25,7 +25,6 @@
             <!-- CD -->
             <div class="cd">
                 <div class="cd-thump" style="background-image: url('./assets/img/musician.jpg');">
-                    
                 </div>
             </div>
 
@@ -49,45 +48,180 @@
                 </div>
             </div>
 
-            <input type="range" id="song" name="song" min="0" max="100">
+            <input type="range" id="song-range" name="song" value="1" min="0" step="1" max="100">
             
             <audio src=""></audio>
+            <span class="next-title">Up next:</span>
         </div>
     
         <!-- play list the song -->
-        <div class="play-list">
-            <div class="song">
-                <div class="song-thump" style="background-image: url('./assets/img/eyes-g485edc9d1_640.jpg')"></div>
-                <div class="song-name">
-                    <h1>Don't break my heart</h1>
-                    <h3>website is with a Kit</h3>
-                </div>
-                <div class="song-option">
-                    <i class="fa-solid fa-ellipsis"></i>
-                </div>
-            </div>
-            <div class="song">
-                <div class="song-thump" style="background-image: url('./assets/img/eyes-g485edc9d1_640.jpg')"></div>
-                <div class="song-name">
-                    <h1>Don't break my heart</h1>
-                    <h3>website is with a Kit</h3>
-                </div>
-                <div class="song-option">
-                    <i class="fa-solid fa-ellipsis"></i>
-                </div>
-            </div>
-            <div class="song">
-                <div class="song-thump" style="background-image: url('./assets/img/eyes-g485edc9d1_640.jpg')"></div>
-                <div class="song-name">
-                    <h1>Don't break my heart</h1>
-                    <h3>website is with a Kit</h3>
-                </div>
-                <div class="song-option">
-                    <i class="fa-solid fa-ellipsis"></i>
-                </div>
-            </div>
+        <div class="play-list">  
         </div>
     </div>
 </body>
+
+ <!-- code song app -->
+    <script>
+        const $ = document.querySelector.bind(document);
+        const $$ = document.querySelectorAll.bind(document);
+
+        const heading = $('header h1');
+        const cdThump = $('.cd-thump');
+        const audio = $('audio');
+        const cd = $('.cd');
+        const btnPlay = $('.btn-toggle-play');  
+        const player = $('.player');
+        const range = $('#song-range')
+
+        const app = {
+            currentIndex: 0,
+            isPlaying: false,
+            songs: [
+                {
+                    name: 'Ngày đầu tiên',
+                    singger: 'Đức Phúc',
+                    patch: './assets/music/y2mate.com - NGÀY ĐẦU TIÊN  ĐỨC PHÚC  OFFICIAL MUSIC VIDEO  VALENTINE 2022.mp3',
+                    image: './assets/img/ngaydautien.jpg'
+                },
+                {
+                    name: 'Don\'t break my heart',
+                    singger: 'Binz',
+                    patch: './assets/music/y2mate.com - BINZ x TOULIVER  DONT BREAK MY HEART OFFICIAL MV.mp3',
+                    image: './assets/img/dont-break.jpg'
+                },
+                {
+                    name: 'Chạy về nơi phía anh',
+                    singger: 'Khắc Việt',
+                    patch: './assets/music/ChayVeNoiPhiaAnh-KhacViet-7129688.mp3',
+                    image: './assets/img/ngaydautien.jpg'
+                },
+                {
+                    name: 'Feded',
+                    singger: 'Alan Walker',
+                    patch: './assets/music/y2mate.com - Alan Walker  Faded.mp3',
+                    image: './assets/img/feded.jpg'
+                },
+                {
+                    name: 'Don\'t break my heart',
+                    singger: 'Binz',
+                    patch: './assets/music/y2mate.com - BINZ x TOULIVER  DONT BREAK MY HEART OFFICIAL MV.mp3',
+                    image: './assets/img/dont-break.jpg'
+                },
+                {
+                    name: 'Ngày đầu tiên',
+                    singger: 'Đức Phúc',
+                    patch: './assets/music/y2mate.com - NGÀY ĐẦU TIÊN  ĐỨC PHÚC  OFFICIAL MUSIC VIDEO  VALENTINE 2022.mp3',
+                    image: './assets/img/ngaydautien.jpg'
+                },
+                {
+                    name: 'Chạy về nơi phía anh',
+                    singger: 'Khắc Việt',
+                    patch: './assets/music/ChayVeNoiPhiaAnh-KhacViet-7129688.mp3',
+                    image: './assets/img/ngaydautien.jpg'
+                },
+                {
+                    name: 'Feded',
+                    singger: 'Alan Walker',
+                    patch: './assets/music/y2mate.com - Alan Walker  Faded.mp3',
+                    image: './assets/img/feded.jpg'
+                }
+            ],
+            render: function() {
+                const html = this.songs.map(song => {
+                    return `<div class="song">
+                            <div class="song-item">
+                                <div class="song-thump" style="background-image: url('${song.image}')"></div>
+                                <div class="song-name">
+                                    <h1>${song.name}</h1>
+                                    <h3>${song.singger}</h3>
+                                </div>
+                            </div>
+                            <div class="song-option">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </div>
+                        </div>`;
+                })
+                $('.play-list').innerHTML = html.join('');
+            },
+            
+            defindProperties: function() {
+                Object.defineProperty(this, 'currentSong', {
+                    get: function() {
+                        return this.songs[this.currentIndex]
+                    }
+                });
+            },
+
+            handleEvents: function() {
+                const dashboard = $('.dashboard')
+                const cdWidth = cd.offsetWidth;
+                const _this = this;
+                
+                document.onscroll = function() {
+                    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                    const newCdWidth = cdWidth - scrollTop;
+
+                    cd.style.width = newCdWidth > 0 ? newCdWidth + 'px' : 0;
+                    cd.style.height = newCdWidth + 'px';
+                    cd.style.opacity = newCdWidth / cdWidth;
+                }
+
+                //xu ly khi play
+                btnPlay.onclick = function() {
+                    if(_this.isPlaying) {
+                        audio.pause();
+                    }else {           
+                        audio.play();     
+                    }
+                    
+                }
+
+                //when song played
+                audio.onplay = function() {
+                    _this.isPlaying = true;
+                     player.classList.add('playing');
+                }
+
+                 //when song pause
+                audio.onpause = function () {
+                    _this.isPlaying = false;
+                    player.classList.remove('playing');
+                }
+
+                //when time update
+                audio.ontimeupdate = function() {
+                    if(audio.duration) {
+                        const propress = Math.floor(audio.currentTime / audio.duration * 100);
+                        range.value = propress;
+                    }
+                }
+
+                // handle when tua
+                range.onchange = function(e) {
+                    const seekTime = audio.duration / 100 * e.target.value;
+                    audio.currentTime = seekTime;
+                }
+            },
+            loadCurrentSong: function() {
+                heading.textContent = this.currentSong.name;
+                cdThump.style.backgroundImage = `url('${this.currentSong.image}')`;
+                audio.src = this.currentSong.patch;
+            },
+
+            start: function() {
+                // dinh nghia cac thuoc tinh cho object
+                this.defindProperties();
+
+                this.handleEvents();
+
+                this.loadCurrentSong()
+
+                this.render();
+            }
+        }
+
+        app.start()
+    </script>
+
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </html>

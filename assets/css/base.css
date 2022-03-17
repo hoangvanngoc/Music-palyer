@@ -21,4 +21,32 @@ h4 {
     font-size: 2rem;
     color: #85848f;
     font-weight: 300;
+    border: none;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: ease .2s;
+}
+
+.btn-play-animation {
+    transition: all .4s;
+    transform: scale(1.2);
+    box-shadow: 0 0 5px #fff;
+    background-color: #e9f5f7;
+}
+
+.btn-toggle-play:hover, 
+.btn-toggle-play:focus {
+    transition: all .3s;
+    transform: scale(1.2);
+    box-shadow: 0 0 5px rgba(31, 174, 240),
+    0 0 5px rgba(31, 174, 240, 0.8),
+    0 0 10px rgba(31, 174, 240, 0.6),
+    0 0 15px rgba(31, 174, 240, 0.4);
+    opacity: .6;
+}
+
+.btn-toggle-play:hover i {
+    transition-delay: .2s;
+    color: rgba(31, 174, 240, 0.8);
 }
